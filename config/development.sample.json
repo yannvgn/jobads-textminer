@@ -1,0 +1,6 @@
+{
+    "indeed": {
+        "API_key": "DO NOT PUT ANYTHING HERE, USE PRIVATE CONFIGURATION FILE INSTEAD",
+        "endpoint": "http://api.indeed.com/ads/apisearch"
+    }
+}
