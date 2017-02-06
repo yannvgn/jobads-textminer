@@ -10,6 +10,8 @@
                 "use_ssl": true,
                 "port": 443
             }
-        ]
+        ],
+        "job_ads_index": "job_ads",
+        "ad_doc_type": "jobad_french"
     }
 }

@@ -3,3 +3,4 @@ Flask>=0.12
 gevent
 gunicorn
 elasticsearch>=2.3.0,<3.0.0
+certifi
