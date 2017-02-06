@@ -1,12 +1,12 @@
 {
     "indeed": {
-        "API_key": "DO NOT PUT ANYTHING HERE, USE PRIVATE CONFIGURATION FILE INSTEAD",
+        "API_key": "ENV:JOBADS_INDEED_API_KEY",
         "endpoint": "http://api.indeed.com/ads/apisearch"
     },
     "elasticsearch": {
         "hosts": [
             {
-                "host": "DO NOT PUT ANYTHING HERE, USE PRIVATE CONFIGURATION FILE INSTEAD",
+                "host": "ENV:JOBADS_ELASTICSEARCH_HOST",
                 "use_ssl": true,
                 "port": 443
             }
