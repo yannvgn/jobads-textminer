@@ -2,5 +2,14 @@
     "indeed": {
         "API_key": "DO NOT PUT ANYTHING HERE, USE PRIVATE CONFIGURATION FILE INSTEAD",
         "endpoint": "http://api.indeed.com/ads/apisearch"
+    },
+    "elasticsearch": {
+        "hosts": [
+            {
+                "host": "DO NOT PUT ANYTHING HERE, USE PRIVATE CONFIGURATION FILE INSTEAD",
+                "use_ssl": true,
+                "port": 443
+            }
+        ]
     }
 }
