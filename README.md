@@ -16,8 +16,6 @@ The projets relies on some python packages. To install them, run the following c
 pip install -r requirements.txt
 ```
 
-Then, you should create your configuration files: copy `config/*.sample.json` to `config/*.private.json` and change the values in your private files according to your environment (see _Configuration_ paragraph).
-
 ## Directory structure
 
 - `config/` (configuration directory, see _Configuration_ paragraph)
@@ -26,25 +24,31 @@ Then, you should create your configuration files: copy `config/*.sample.json` to
 
 ## Configuration
 
-All configuration variables (API keys, database connection information, ...) should be stored in a JSON file in the `config/` directory.
+The application configuration should be stored in a JSON file in the `config/` directory.
 
-By convention, we distinguish 2 types of configuration files:
-- `*.sample.json` containing __every__ configuration variable keys but with sample values. __Such files are committed: they must not contain any credentials__.
-- `*.private.json` containing the same variables as the corresponding sample file, but with actual values. __They should never be committed__.
+**Sensitive information, such as API keys, database credentials, etc. should not be stored in the configuration file.** Environment variables are used instead.
+
+To refer to environment variables in the JSON configuration variables, use `ENV:XXXX` sythax.
+ ```json
+...
+"API_key": "ENV:JOBADS_INDEED_API_KEY",
+...
+```
+
 
 ## jobads main package
 
 The main package is located in the `jobads/` directory. It implements job ads fetching and analysis logic.
 
 > __Note, configuration__.
-> When importing the package, the configuration is automatically loaded. By default, the file `./config/development.private.json` is loaded (where `.` is the current directory, from which python was loaded).
+> When importing the package, the configuration is automatically loaded. By default, the file `./config/development.json` is loaded (where `.` is the current directory, from which python was loaded).
 >
 > The environment variable `JOBADS_CONFIG` overwrites this value.
 >
 > To read a value from the configuration:
 > `from jobads import config` and `config['someKey']`.
 
-For the moment, the jobads package is made up of 2 entities, described below.
+For the moment, the jobads package is made up of 3 entities, described below.
 
 ### Ad collector (`jobads/collector/`)
 
@@ -55,6 +59,25 @@ For the moment, the jobads package is made up of 2 entities, described below.
 
 - takes job ads from the _raw job ads database_
 - processes them (via ElasticSearch or custom data mining)
+
+### Fetching ads (`jobads/fetch/`)
+
+- processes queries over job ads
+
+## API
+
+The API server is the backend entry point. It handles requests from the frontend server.
+
+To launch the API server locally,
+```bash
+gunicorn api:app -c gunicorn_config.private.py
+```
+assuming `gunicorn_config.private.py` is the gunicorn local configuration file.
+
+`gunicorn_config.private.py` can be used to set environment variables :
+```python
+raw_env = ['JOBADS_INDEED_API_KEY=0123456789', 'JOBADS_ELASTICSEARCH_HOST=xxx.yyy.zzz.amazonaws.com']
+```
 
 ## Notes
 
