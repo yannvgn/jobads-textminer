@@ -28,7 +28,7 @@ def getAdsBySimpleQuery(q):
         'query': {
             'multi_match' : {
                 'query':    q,
-                'fields': [ 'title_fr', 'description_fr', 'company', 'location' ]
+                'fields': [ 'title_fr', 'description_fr', 'company', 'location' , 'id' ]
             }
         }
     }))
