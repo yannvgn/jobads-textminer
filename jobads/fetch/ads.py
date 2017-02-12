@@ -1,4 +1,5 @@
 from jobads import config
+from flask import request
 from elasticsearch import Elasticsearch
 
 es = Elasticsearch(hosts=config['elasticsearch']['hosts'], verify_certs=True)
