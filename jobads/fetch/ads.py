@@ -1,5 +1,4 @@
 from jobads import config
-from flask import request
 from elasticsearch import Elasticsearch
 
 es = Elasticsearch(hosts=config['elasticsearch']['hosts'], verify_certs=True)
@@ -25,7 +24,7 @@ def getAdsBySimpleQuery(q):
         return {}
     
     return _formatQueryResponse(_queryElastic(body={
-        'from' : request.arg.get('limit'), 'size' : request.args.get('offset'),
+        'from' : 0, 'size' : 30,
         'query': {
             'multi_match' : {
                 'query':    q,
