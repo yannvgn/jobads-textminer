@@ -24,7 +24,7 @@ def getAdsBySimpleQuery(q):
         return {}
     
     return _formatQueryResponse(_queryElastic(body={
-        'from' : 0, 'size' : 30,
+        'from' : request.arg.get('limit'), 'size' : request.args.get('offset'),
         'query': {
             'multi_match' : {
                 'query':    q,
