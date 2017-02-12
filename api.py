@@ -1,5 +1,5 @@
 #!flask/bin/python
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import jobads.fetch.ads 
 
 app = Flask(__name__)
