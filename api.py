@@ -33,5 +33,20 @@ def get_ads_post():
     else:
         abort(400)
 
+@app.route('/api/ads/get/<q>', methods=['GET'])
+def get_ads_by_ID(q):
+    for id in q.split(','):
+        print(id)
+    ids_query=jobads.fetch.ads._mgetQuery(body={
+
+        'ids':q.split(',')
+    })
+    return jsonify(ids_query)
+
+
+
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)

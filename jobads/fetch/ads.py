@@ -31,3 +31,13 @@ def getAdsBySimpleQuery(q,lim,off):
             }
         }
     }))
+
+def _mgetQuery(**args):
+    return es.mget(index=config['elasticsearch']['job_ads_index'], doc_type=config['elasticsearch']['ad_doc_type'],  **args)
+
+
+#def getAdsByIds(q):
+    ##return _formatQueryResponse(_mgetQuery(body={
+
+        ##'ids' :q
+#}))
