@@ -19,11 +19,11 @@ def _formatQueryResponse(esResult):
 def _queryElastic(**args):
     return es.search(index=config['elasticsearch']['job_ads_index'], doc_type=config['elasticsearch']['ad_doc_type'], **args)
 
-def getAdsBySimpleQuery(q):
+def getAdsBySimpleQuery(q,lim,off):
     q = str(q)
     
     return _formatQueryResponse(_queryElastic(body={
-        'from' : 0, 'size' : 30,
+        'from' : off, 'size' : lim,
         'query': {
             'multi_match' : {
                 'query':    q,
