@@ -8,20 +8,32 @@ app = Flask(__name__)
 def get_ads(q):
     limit=request.args.get("limit",10)
     offset=request.args.get("offset",0)
+    
     jobtype = request.args.get('jobtype', None)
+
+    geofilter = None    
+    lat = request.args.get('lat', None)
+    lon = request.args.get('lon', None)
+    dist = request.args.get('dist', None)
 
     try:
         limit=int(limit)
         offset=int(offset)
     except ValueError:
         abort(400)
-
     if (limit < 0 or offset < 0):
         abort(400)
 
-    else:
-        ads=jobads.fetch.ads.getAdsBySimpleQuery(q=q, limit=limit, offset=offset, jobtype=jobtype)
-        return jsonify(ads)
+    if (lat != None and lon != None and dist != None):
+        try:
+            lat = float(lat)
+            lon = float(lon)
+            geofilter = {'lat': lat, 'lon': lon, 'dist': dist}
+        except ValueError:
+            abort(400)
+
+    ads=jobads.fetch.ads.getAdsBySimpleQuery(q=q, limit=limit, offset=offset, jobtype=jobtype, geofilter=geofilter)
+    return jsonify(ads)
 
 @app.route('/api/ads/search', methods=['POST'])
 def get_ads_post():

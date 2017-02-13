@@ -19,13 +19,23 @@ def _formatQueryResponse(esResult):
 def _queryElastic(**args):
     return es.search(index=config['elasticsearch']['job_ads_index'], doc_type=config['elasticsearch']['ad_doc_type'], **args)
 
-def getAdsBySimpleQuery(q,limit,offset,jobtype):
+def getAdsBySimpleQuery(q,limit=10,offset=0,jobtype=None,geofilter=None):
     q = str(q)
     
     filters = []
 
     if jobtype:
-         filters.append({'term': {'jobtype': jobtype}})
+        filters.append({'term': {'jobtype': jobtype}})
+    if geofilter:
+        filters.append({
+            'geo_distance' : {
+                'distance' : str(geofilter['dist']),
+                'geolocation' : {
+                    'lat' : float(geofilter['lat']),
+                    'lon' : float(geofilter['lon'])
+                }
+            }
+        })
 
     return _formatQueryResponse(_queryElastic(body={
         'from' : offset, 'size' : limit,
