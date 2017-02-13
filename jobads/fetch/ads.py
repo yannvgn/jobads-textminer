@@ -19,15 +19,25 @@ def _formatQueryResponse(esResult):
 def _queryElastic(**args):
     return es.search(index=config['elasticsearch']['job_ads_index'], doc_type=config['elasticsearch']['ad_doc_type'], **args)
 
-def getAdsBySimpleQuery(q,lim,off):
+def getAdsBySimpleQuery(q,limit,offset,jobtype):
     q = str(q)
     
+    filters = []
+
+    if jobtype:
+         filters.append({'term': {'jobtype': jobtype}})
+
     return _formatQueryResponse(_queryElastic(body={
-        'from' : off, 'size' : lim,
+        'from' : offset, 'size' : limit,
         'query': {
-            'multi_match' : {
-                'query':    q,
-                'fields': [ 'title_fr', 'description_fr', 'company', 'location' , 'id' ]
+            'bool': {
+                'must': {
+                    'multi_match' : {
+                        'query':    q,
+                        'fields': [ 'title_fr', 'description_fr', 'company', 'location' , 'id' ]
+                    }
+                },
+                'filter': filters
             }
         }
     }))
@@ -41,3 +51,28 @@ def _mgetQuery(**args):
 
         ##'ids' :q
 #}))
+
+def getAdsCoordsBySimpleQuery(q):
+    nb_max_results = 1000
+
+    q = str(q)
+
+    esResult = _queryElastic(_source=['geolocation'], body={
+        'query': { 
+            'bool': {
+                'must': {
+                    'multi_match' : {
+                        'query':    q,
+                        'fields': [ 'title_fr', 'description_fr', 'company', 'location']
+                    }
+                },
+                'filter': {
+                    'exists': {'field': 'geolocation'}
+                }
+            }
+        },
+        'size': nb_max_results
+    })
+
+    return _formatQueryResponse(esResult)
+
