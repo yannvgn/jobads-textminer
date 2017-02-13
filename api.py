@@ -46,10 +46,24 @@ def get_ads_post():
     else:
         abort(400)
 
+
+@app.route('/api/ads/get/<q>', methods=['GET'])
+def get_ads_by_ID(q):
+    for id in q.split(','):
+        print(id)
+    ids_query=jobads.fetch.ads._mgetQuery(body={
+
+        'ids':q.split(',')
+    })
+    return jsonify(ids_query)
+
+
+
 @app.route('/api/ads/coords/search/<q>', methods=['GET'])
 def get_ads_coords(q):
     coords=jobads.fetch.ads.getAdsCoordsBySimpleQuery(q)
     return jsonify(coords)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

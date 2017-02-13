@@ -52,6 +52,16 @@ def getAdsBySimpleQuery(q,limit=10,offset=0,jobtype=None,geofilter=None):
         }
     }))
 
+def _mgetQuery(**args):
+    return es.mget(index=config['elasticsearch']['job_ads_index'], doc_type=config['elasticsearch']['ad_doc_type'],  **args)
+
+
+#def getAdsByIds(q):
+    ##return _formatQueryResponse(_mgetQuery(body={
+
+        ##'ids' :q
+#}))
+
 def getAdsCoordsBySimpleQuery(q):
     nb_max_results = 1000
 
@@ -75,3 +85,4 @@ def getAdsCoordsBySimpleQuery(q):
     })
 
     return _formatQueryResponse(esResult)
+
