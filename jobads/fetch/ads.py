@@ -31,3 +31,27 @@ def getAdsBySimpleQuery(q):
             }
         }
     }))
+
+def getAdsCoordsBySimpleQuery(q):
+    nb_max_results = 1000
+
+    q = str(q)
+
+    esResult = _queryElastic(_source=['geolocation'], body={
+        'query': { 
+            'filtered': {
+                'query': {
+                    'multi_match' : {
+                        'query':    q,
+                        'fields': [ 'title_fr', 'description_fr', 'company', 'location']
+                    }
+                },
+                'filter': {
+                    'exists': {'field': 'geolocation'}
+                }
+            }
+        },
+        'size': nb_max_results
+    })
+
+    return _formatQueryResponse(esResult)
