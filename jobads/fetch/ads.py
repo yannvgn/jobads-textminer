@@ -20,8 +20,7 @@ def _queryElastic(**args):
     return es.search(index=config['elasticsearch']['job_ads_index'], doc_type=config['elasticsearch']['ad_doc_type'], **args)
 
 def getAdsBySimpleQuery(q):
-    if type(q) != str:
-        return {}
+    q = str(q)
     
     return _formatQueryResponse(_queryElastic(body={
         'from' : 0, 'size' : 30,
