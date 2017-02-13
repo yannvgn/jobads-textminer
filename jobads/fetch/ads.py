@@ -6,7 +6,8 @@ es = Elasticsearch(hosts=config['elasticsearch']['hosts'], verify_certs=True)
 def _formatResult(hit):
     result = hit['_source']
     result['_id'] = hit['_id']
-    result['_score'] = hit['_score']
+    if '_score' in hit:
+        result['_score'] = hit['_score']
     return result
 
 def _formatQueryResponse(esResult):
@@ -56,11 +57,10 @@ def _mgetQuery(**args):
     return es.mget(index=config['elasticsearch']['job_ads_index'], doc_type=config['elasticsearch']['ad_doc_type'],  **args)
 
 
-#def getAdsByIds(q):
-    ##return _formatQueryResponse(_mgetQuery(body={
-
-        ##'ids' :q
-#}))
+def getAdsByIds(ids):
+    return {
+        'results': [_formatResult(doc) for doc in _mgetQuery(body={'ids' : ids})['docs']]
+    }
 
 def getAdsCoordsBySimpleQuery(q):
     nb_max_results = 1000
