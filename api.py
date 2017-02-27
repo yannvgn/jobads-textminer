@@ -1,4 +1,3 @@
-#!flask/bin/python
 from flask import Flask, jsonify, request, abort
 import jobads.fetch.ads 
 
@@ -84,6 +83,7 @@ def _getFilters(req):
     filters = {}
     filters.update(_getJobtypeFilter(req))
     filters.update(_getGeoFilter(req))
+    filters.update(_getSalaryFilter(req))
     return filters
 
 def _getJobtypeFilter(req):
@@ -102,6 +102,17 @@ def _getGeoFilter(req):
             lat = float(lat)
             lon = float(lon)
             return {'geodistance': {'lat': lat, 'lon': lon, 'dist': dist}}
+        except ValueError:
+            abort(400)
+    else:
+        return {}
+
+def _getSalaryFilter(req):
+    salary_min = _getParam(req, 'salary_min')
+    if salary_min != None:
+        try:
+            salary_min = float(salary_min)
+            return {'salary': {'min': salary_min}}
         except ValueError:
             abort(400)
     else:

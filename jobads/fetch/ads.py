@@ -97,4 +97,10 @@ def _makeFilterBody(filters):
                 }
             }
         })
+    if 'salary' in filters:
+        filterBody.append({
+            'range': {
+                'salary.min' : {'gte': filters['salary']['min']}
+            }
+        })
     return filterBody
