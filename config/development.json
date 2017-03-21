@@ -13,5 +13,11 @@
         ],
         "job_ads_index": "job_ads",
         "ad_doc_type": "jobad_french"
+    },
+    "skills": {
+        "tokenized_skills_by_nb_words": "data/tokenizedSkillsByNbWords.pk"
+    },
+    "ads_word2vec": {
+        "trained_model": "data/ads_word2vec_model.mod"
     }
 }

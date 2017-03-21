@@ -2,10 +2,13 @@ from flask import Flask, jsonify, request, abort
 from datetime import datetime
 
 import jobads.fetch.ads 
+import jobads.processor.skills
 
 app = Flask(__name__)
 
 # Routing
+
+# Fetching
 
 # Deprecated
 @app.route('/api/ads/search/<q>', methods=['GET'])
@@ -48,6 +51,21 @@ def get_ads_basic_info():
     
     basic_info=jobads.fetch.ads.getAdsBasicInfoByIds(ids)
     return jsonify(basic_info)
+
+# Processing
+
+@app.route('/api/skills/extract/cv', methods=['POST', 'GET'])
+def extract_skills_from_cv():
+    cv_content = _getRequiredParam(request, 'text_content')
+    extracted_skills = jobads.processor.skills.extract_skills_from_cv(cv_content)
+    return jsonify(extracted_skills)
+
+@app.route('/api/skills/similar', methods=['POST', 'GET'])
+def similar_skills():
+    skills = _getRequiredParam(request, 'skills')
+    if type(skills) != list:
+        skills = str(skills).split(',')
+    return jsonify(jobads.processor.skills.get_similar_skills(skills))
 
 
 # Internal functions
