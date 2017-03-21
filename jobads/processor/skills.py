@@ -7,6 +7,8 @@ from nltk.corpus import stopwords
 import numpy as np
 import sklearn.manifold
 
+nltk.data.path.append(config['nltk']['data'])
+
 # The model is loaded only once. Restart the server to reload it.
 # TODO : the model should periodically be trained by the server.
 ads_word2vec_model = Word2Vec.load(config['ads_word2vec']['trained_model'])
