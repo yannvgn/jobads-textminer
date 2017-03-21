@@ -21,6 +21,6 @@
         "trained_model": "data/ads_word2vec_model.mod"
     },
     "nltk": {
-        "data": "data/ntlk"
+        "data": "data/nltk"
     }
 }
