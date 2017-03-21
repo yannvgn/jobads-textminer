@@ -13,6 +13,10 @@ setup(name='jobads-textminer',
             'gevent',
             'gunicorn',
             'elasticsearch>=2.3.0,<3.0.0',
-            'certifi'
+            'certifi',
+            'gensim',
+            'numpy',
+            'nltk',
+            'sklearn'
             ]
      )
