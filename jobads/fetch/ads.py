@@ -1,5 +1,6 @@
 from jobads import config
 from elasticsearch import Elasticsearch
+from datetime import datetime
 
 es = Elasticsearch(hosts=config['elasticsearch']['hosts'], verify_certs=True)
 
@@ -101,6 +102,12 @@ def _makeFilterBody(filters):
         filterBody.append({
             'range': {
                 'salary.min' : {'gte': filters['salary']['min']}
+            }
+        })
+    if 'from_date' in filters:
+        filterBody.append({
+            'range': {
+                'date': {'gte': filters['from_date'].strftime('%Y-%m-%dT%H:%M:%S')}
             }
         })
     return filterBody

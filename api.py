@@ -1,4 +1,6 @@
 from flask import Flask, jsonify, request, abort
+from datetime import datetime
+
 import jobads.fetch.ads 
 
 app = Flask(__name__)
@@ -84,6 +86,7 @@ def _getFilters(req):
     filters.update(_getJobtypeFilter(req))
     filters.update(_getGeoFilter(req))
     filters.update(_getSalaryFilter(req))
+    filters.update(_getFromDateFilter(req))
     return filters
 
 def _getJobtypeFilter(req):
@@ -118,7 +121,16 @@ def _getSalaryFilter(req):
     else:
         return {}
 
-
+def _getFromDateFilter(req):
+    fromDate = _getParam(req, 'from_date')
+    if fromDate != None:
+        try:
+            d = datetime.strptime(fromDate, '%Y-%m-%dT%H:%M:%S.%fZ')
+            return {'from_date': d}
+        except ValueError:
+            abort(400)
+    else:
+        return {}
 
 if __name__ == '__main__':
     app.run(debug=True)
