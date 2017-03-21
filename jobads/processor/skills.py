@@ -69,7 +69,7 @@ def get_similar_skills(skills, limit=10):
                 words.append(x)
                 
     if not words:
-        return {}
+        return {'similar_skills': [], 'query': []}
         
     similar_words = ads_word2vec_model.most_similar(positive=words, topn=limit)
 
