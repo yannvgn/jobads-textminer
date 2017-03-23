@@ -67,6 +67,7 @@ def get_similar_skills(skills, limit=10):
     words = []
     for skill in skills:
         for x in skill.split():
+            x = x.lower()
             if x in ads_word2vec_model and x not in words:
                 words.append(x)
                 
@@ -80,7 +81,7 @@ def get_similar_skills(skills, limit=10):
         all_words.append(similar_word[0])
     vectors = np.asfarray([ads_word2vec_model[word] for word in all_words], dtype='float')
     
-    tsne = sklearn.manifold.TSNE(n_components=2, random_state=42)
+    tsne = sklearn.manifold.TSNE(n_components=2, random_state=42, perplexity=10)
     projected_vectors = tsne.fit_transform(vectors).tolist()
     named_projected_vectors = {}
     for i in range(len(all_words)):
